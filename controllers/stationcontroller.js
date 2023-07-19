@@ -4,13 +4,13 @@ const bcrypt = require('bcryptjs')
 
 module.exports.insert = async (req, res) => {
 
-    const {id,name,created_at,lat,lon} = { ...req.body }
+    const {id,name,lat,lon,company_name} = { ...req.body }
     try {
     const existingStation = await Station.findOne({name:name})
     if (existingStation) {
     return res.status(400).json('Station already found..')
     }
-    const newStation = new Station({id:Number(id),name,created_at,lat,lon})
+    const newStation = new Station({id:Number(id),name,lat,lon,company_name})
     await newStation.save();
     const token = jwt.sign({ name: newStation.name, id: newStation._id }, 'token', { expiresIn: '1h' })
     res.status(200).json({ Station: newStation, token })
@@ -40,6 +40,15 @@ module.exports.getAllStations = async (req, res) => {
         res.status(500).json(error)
         }
         }
+module.exports.getCompanyStations = async (req, res) => {
+            try {
+            const { company_name } = {...req.body};
+            const Stations = await Station.find({company_name:company_name})
+            res.status(200).json(Stations)
+            } catch (error) {
+            res.status(500).json(error)
+            }
+            }
 
 module.exports.updateStation = async (req, res) => {
             const { name } = {...req.body}

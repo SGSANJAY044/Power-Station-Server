@@ -11,6 +11,8 @@ password: {
     type: String,
     },
 status: String,
+isActive:{type:Boolean,
+    default:false},
 created_at: {
 type : Date,
 default :Date.now

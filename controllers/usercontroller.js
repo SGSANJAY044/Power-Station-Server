@@ -1,5 +1,6 @@
 const {User}=require('../model/User');
 const {Admin}=require('../model/Admin')
+const {Host}=require('../model/Host')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
@@ -26,6 +27,9 @@ module.exports.login = async (req, res) => {
     const { email, password } = req.body;
     try {
     var existinguser = await User.findOne({ email:email })
+    if (!existinguser) {
+        existinguser= await Host.findOne({ email:email })
+    }
     if (!existinguser) {
     existinguser= await Admin.findOne({ email:email })
     if (!existinguser) {

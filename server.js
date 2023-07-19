@@ -8,6 +8,7 @@ const {connectdb} = require('./connect');
 const userRoutes = require('./routes/userroute')
 const adminRoutes= require('./routes/adminroute')
 const stationRoutes=require('./routes/stationroute')
+const hostroute=require('./routes/hostroute')
 app=express()
 
 dotenv.config();
@@ -19,11 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get('/api/',(req,res)=>{
-    res.send("FreelancingForum")
+    res.send("Power Station")
     })
     
 app.use('/api/user', userRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/host', hostroute)
 app.use('/api/station', stationRoutes)
 connectdb()
 .then(() => {
