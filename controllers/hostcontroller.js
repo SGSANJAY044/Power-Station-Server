@@ -3,16 +3,16 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 module.exports.signup = async (req, res) => {
-    const {company_name,email,phone,password} = { ...req.body }
+    const {id,company_name,email,phone,password} = { ...req.body }
     try {
     const existingHost = await Host.findOne({company_name:company_name})
     if (existingHost) {
     return res.status(400).json('Company Already Registered..')
     }
     const hashPassword = await bcrypt.hash(password, 12);
-    const newHost = new Host({ company_name,email,phone, password: hashPassword})
+    const newHost = new Host({ id,company_name,email,phone, password: hashPassword})
     await newHost.save();
-    const token = jwt.sign({ email: newHost.email, id: newHost._id }, 'token', { expiresIn: '1h' })
+    const token = jwt.sign({ email: newHost.email}, 'token', { expiresIn: '1h' })
     res.status(200).json({ Host: newHost, token })
     } catch (err) {
     console.log(err.message)
