@@ -34,7 +34,7 @@ connectdb()
     console.log(err.message, 'oops err');
     });
 
-const port = process.env.port || 8088
+const port = 8088
 app.listen(port, () => {
 console.log(`Server is running at port ${port}`)
 });
